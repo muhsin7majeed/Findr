@@ -1,16 +1,17 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {View, Text, Image, Linking, PermissionsAndroid} from 'react-native';
-import {requestStoragePermission} from '../services/requestPermission';
+import {requestStoragePermission} from '../functions/requestPermission';
 import {Card, CardItem, Left, Icon, Right} from 'native-base';
-import {downloadImage} from '../services/Download';
+import {downloadImage} from '../functions/Download';
 
-const Cards = ({data}) => {
+const Cards = ({data, textColor, bgColor, bgShade, theme}) => {
   const handleDownload = () => {
     PermissionsAndroid.check(
       PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
     ).then(res => {
       if (res) {
-        downloadImage(data.src.original, data.id);
+        downloadImage(data.download, data.id);
       } else {
         requestStoragePermission();
       }
@@ -18,25 +19,36 @@ const Cards = ({data}) => {
   };
 
   return (
-    <View>
-      <Card>
-        <CardItem>
+    <View style={{marginBottom: 10}}>
+      <Card
+        style={{
+          borderRadius: 5,
+          borderColor: 'transparent',
+          backgroundColor: theme ? bgColor : '#fff',
+        }}>
+        <CardItem
+          style={{
+            backgroundColor: theme ? bgColor : '#fff',
+            borderRadius: 5,
+          }}>
           <Left>
             <View>
-              <Text onPress={() => Linking.openURL(data.photographer_url)}>
+              <Text
+                style={{color: theme ? '#fff' : '#333'}}
+                onPress={() => Linking.openURL(data.photographerUrl)}>
                 {data.photographer}
               </Text>
               <Text
-                style={{opacity: 0.5}}
+                style={{opacity: 0.5, color: theme ? '#fff' : '#333'}}
                 note
-                onPress={() => Linking.openURL('https://www.pexels.com')}>
-                @pexels
+                onPress={() => Linking.openURL(data.sourceUrl)}>
+                @{data.source}
               </Text>
             </View>
           </Left>
           <Right>
             <Icon
-              style={{padding: 10, color: 'blue'}}
+              style={{padding: 10, color: theme ? '#fff' : '#333'}}
               onPress={handleDownload}
               name="download"
             />
@@ -44,7 +56,7 @@ const Cards = ({data}) => {
         </CardItem>
         <CardItem cardBody>
           <Image
-            source={{uri: data.src.medium}}
+            source={{uri: data.thumbnail}}
             style={{height: 200, width: null, flex: 1}}
           />
         </CardItem>

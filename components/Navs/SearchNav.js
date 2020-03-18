@@ -2,11 +2,11 @@ import React from 'react';
 import {Fab, Icon} from 'native-base';
 // import {Icon} from 'react-native-vector-icons/Icon';
 
-const SearchNav = ({navigation}) => {
+const SearchNav = ({navigation, bgColor}) => {
   return (
     <Fab
       style={{
-        backgroundColor: '#0066FF',
+        backgroundColor: bgColor,
       }}
       position="bottomRight"
       // onPress={fn}

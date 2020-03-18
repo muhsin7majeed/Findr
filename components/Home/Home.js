@@ -1,6 +1,5 @@
-import React, {useState} from 'react';
-import {StyleSheet} from 'react-native';
-import {Input, Text, Button, View, Container} from 'native-base';
+import React from 'react';
+import {Container} from 'native-base';
 import Popular from '../Popuplar/Popular';
 import SearchNav from '../Navs/SearchNav';
 import TopNav from '../Navs/TopNav';
@@ -10,13 +9,11 @@ const Home = props => {
     <>
       <Container>
         <TopNav {...props} />
-        <Popular />
+        <Popular {...props} />
       </Container>
       <SearchNav {...props} />
     </>
   );
 };
-
-const styles = StyleSheet.create({});
 
 export default Home;

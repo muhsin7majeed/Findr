@@ -1,50 +1,53 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
-import {Footer, Icon, Input} from 'native-base';
+import {Footer, Input} from 'native-base';
 import FA from 'react-native-vector-icons/FontAwesome';
-const SearchFooter = ({navigation, handleChange, handleSearch}) => {
+const SearchFooter = ({navigation, handleChange, handleSearch, bgColor}) => {
   return (
-    <Footer style={styles.footer}>
+    <Footer
+      style={{
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        backgroundColor: bgColor,
+        height: 60,
+        paddingLeft: 10,
+        paddingRight: 10,
+        alignItems: 'center',
+      }}>
       <FA
         onPress={() => navigation.navigate('Home')}
-        style={styles.icon}
+        style={{
+          fontSize: 22,
+          padding: 5,
+          margin: 5,
+          color: '#fff',
+        }}
         name="arrow-left"
       />
       <Input
         onChangeText={text => handleChange(text)}
-        style={styles.input}
+        style={{
+          backgroundColor: '#fff',
+          borderRadius: 10,
+          paddingLeft: 10,
+          paddingRight: 10,
+          height: 40,
+        }}
         placeholder="cats"
       />
-      <FA onPress={handleSearch} name="search" style={styles.icon} />
+      <FA
+        onPress={handleSearch}
+        name="search"
+        style={{
+          fontSize: 22,
+          padding: 5,
+          margin: 5,
+          color: '#fff',
+        }}
+      />
     </Footer>
   );
 };
-
-const styles = StyleSheet.create({
-  footer: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    backgroundColor: '#0066FF',
-    height: 60,
-    paddingLeft: 10,
-    paddingRight: 10,
-    alignItems: 'center',
-  },
-  input: {
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    paddingLeft: 10,
-    paddingRight: 10,
-    height: 40,
-  },
-  icon: {
-    fontSize: 22,
-    // marginRight: 5,
-    padding: 5,
-    margin: 5,
-    color: '#fff',
-  },
-});
 
 export default SearchFooter;

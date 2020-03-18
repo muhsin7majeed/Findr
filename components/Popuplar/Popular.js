@@ -1,13 +1,13 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, ScrollView} from 'react-native';
-import {Content} from 'native-base';
-import Card from './Cards';
-import Spinners from '../Spinner/Spinners';
+import {View, Text, ScrollView} from 'react-native';
 import {PEXELS_KEY} from 'react-native-dotenv';
 import Axios from 'axios';
 
-const Popular = () => {
+import Card from './Cards';
+import Spinners from '../Spinner/Spinners';
+
+const Popular = ({textColor, bgColor, bgShade, theme}) => {
   const [popularImgs, setPopularImgs] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -20,39 +20,55 @@ const Popular = () => {
       },
     })
       .then(res => {
-        setPopularImgs(res.data.photos);
+        let popularArr = [];
+        res.data.photos.forEach(img => {
+          popularArr.push({
+            thumbnail: img.src.medium,
+            download: img.src.original,
+            photographer: img.photographer,
+            id: img.id,
+            photographerUrl: img.photographer_url,
+            source: 'pexels',
+            sourceUrl: 'www.pexels.com',
+          });
+        });
+        setPopularImgs(popularArr);
         setIsLoading(false);
       })
       .catch(err => console.log(err));
   }, []);
 
   const popularCard = popularImgs.map(img => {
-    return <Card data={img} key={img.id} />;
+    return (
+      <Card
+        textColor={textColor}
+        bgColor={bgColor}
+        bgShade={bgShade}
+        theme={theme}
+        data={img}
+        key={img.id}
+      />
+    );
   });
   return (
     <>
       {isLoading && <Spinners />}
       <ScrollView>
-        <View style={styles.container}>
-          <Text style={styles.header}>Popular Images</Text>
-          <View style={styles.imgCard}>{popularCard}</View>
+        <View style={{padding: 10, backgroundColor: theme ? '#333' : '#fff'}}>
+          <Text
+            style={{
+              fontSize: 18,
+              fontWeight: 'bold',
+              color: textColor,
+              marginBottom: 10,
+            }}>
+            Popular Images
+          </Text>
+          <View>{popularCard}</View>
         </View>
       </ScrollView>
     </>
   );
 };
-const styles = StyleSheet.create({
-  imgCard: {},
-  container: {
-    padding: 10,
-    backgroundColor: '#fff',
-  },
-  header: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 10,
-  },
-});
 
 export default Popular;
